@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="/products">/Fashion/</entry>
+    <entry key="/products?gender=female">/Women/</entry>
+    <entry key="/products?tag=5678">/Boat--Shoes/</entry>
+    <entry key="/products?gender=female&amp;tag=123&amp;tag=1234">/Women/Shoes/</entry>
+    <entry key="/products?brand=123">/Adidas/</entry>
+</properties>
+ 
