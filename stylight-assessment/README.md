@@ -18,6 +18,9 @@
 
 [http://localhost:8031/](http://localhost:8031/)
 
+### Diagram
+follow resources directory.
+
 ### Note
 - Current implementation is straightforward, using in-memory map to store data and caching system.
 for better performance used executor framework for multiple task execution at simultaneously and 
