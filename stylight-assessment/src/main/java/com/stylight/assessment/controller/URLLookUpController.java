@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stylight.assessment.bll.URLService;
+import com.stylight.assessment.exception.InvalidRequestException;
 
 @RestController
 public class URLLookUpController {
@@ -31,6 +32,9 @@ public class URLLookUpController {
 
 	@PostMapping(path = "/uglytopretty")
 	public ResponseEntity<Map<String, String>> uglyToPrettyURL(@RequestBody List<String> listUglyUrl) {
+		if (listUglyUrl.size() == 0) {
+			throw new InvalidRequestException("Request url list empty");
+		}
 
 		Map<String, String> mapUglyToPretty = urlService.getuglyToPrettyMap(listUglyUrl);
 		return ResponseEntity.ok(mapUglyToPretty);
@@ -38,6 +42,10 @@ public class URLLookUpController {
 
 	@PostMapping(path = "/prettytougly")
 	public ResponseEntity<Map<String, String>> prettyToUglyURL(@RequestBody List<String> listPrettyUrl) {
+
+		if (listPrettyUrl.size() == 0) {
+			throw new InvalidRequestException("Request url list empty");
+		}
 
 		Map<String, String> mapPrettyToUgly = urlService.getPrettyToUglyMap(listPrettyUrl);
 		return ResponseEntity.ok(mapPrettyToUgly);

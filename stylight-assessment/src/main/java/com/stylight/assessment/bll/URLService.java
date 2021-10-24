@@ -36,24 +36,29 @@ public class URLService {
 		int count = length / size;
 		int i = 0;
 
-		for (; i < count; i++) {
-			List<String> sub = listUglyUrl.subList(i, size);
-			result.add(executorService.submit(new Task(sub, urlRepository, cacheAgent)));
-			i += size;
-		}
+		try {
+			for (; i < count; i++) {
+				List<String> sub = listUglyUrl.subList(i, size);
+				result.add(executorService.submit(new Task(sub, urlRepository, cacheAgent)));
+				i += size;
+			}
 
-		if (i < length) {
-			List<String> sub = listUglyUrl.subList(i, length);
-			result.add(executorService.submit(new Task(sub, urlRepository, cacheAgent)));
-		}
+			if (i < length) {
+				List<String> sub = listUglyUrl.subList(i, length);
+				result.add(executorService.submit(new Task(sub, urlRepository, cacheAgent)));
+			}
 
+		} catch (Exception e) {
+			throw e;
+		}
+		
 		try {
 			for (Future<Map<String, String>> future : result) {
 				Map<String, String> tmp = future.get();
 				map.putAll(tmp);
 			}
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+		} catch (InterruptedException | ExecutionException ex) {
+			ex.printStackTrace();
 		}
 
 		return map;
@@ -61,13 +66,18 @@ public class URLService {
 
 	public Map<String, String> getPrettyToUglyMap(List<String> listPrettyUrl) {
 		Map<String, String> map = new HashMap<String, String>();
-		for (String url : listPrettyUrl) {
-			if (urlRepository.getPrettyToUgly().containsKey(url)) {
-				map.put(url, urlRepository.getPrettyToUgly().get(url));
-			} else {
-				map.put(url, url);
+		try {
+			for (String url : listPrettyUrl) {
+				if (urlRepository.getPrettyToUgly().containsKey(url)) {
+					map.put(url, urlRepository.getPrettyToUgly().get(url));
+				} else {
+					map.put(url, url);
+				}
 			}
+		} catch (Exception ex) {
+			throw ex;
 		}
+
 		return map;
 	}
 }
