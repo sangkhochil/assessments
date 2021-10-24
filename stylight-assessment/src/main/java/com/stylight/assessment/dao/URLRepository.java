@@ -2,15 +2,12 @@ package com.stylight.assessment.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
