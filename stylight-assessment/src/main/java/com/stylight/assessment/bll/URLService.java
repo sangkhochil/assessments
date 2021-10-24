@@ -41,7 +41,7 @@ public class URLService {
 		int count = length / size;
 		int i = 0;
 		
-		logger.debug("Making task list...");
+		logger.info("Making task list...");
 
 		try {
 			for (; i < count; i++) {
@@ -59,7 +59,7 @@ public class URLService {
 			throw e;
 		}
 		
-		logger.debug("Merging result maps...");
+		logger.info("Merging result maps...");
 		try {
 			for (Future<Map<String, String>> future : result) {
 				Map<String, String> tmp = future.get();

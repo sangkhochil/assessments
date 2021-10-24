@@ -25,7 +25,7 @@ public class URLLookUpController {
 	@PostMapping(path = "/uglytopretty")
 	public ResponseEntity<Map<String, String>> uglyToPrettyURL(@RequestBody List<String> listUglyUrl) {
 		
-		logger.debug("Ugly to pretty request.");
+		logger.info("Ugly to pretty request.");
 		if (listUglyUrl.size() == 0) {
 			throw new InvalidRequestException("Request url list empty");
 		}
@@ -37,7 +37,7 @@ public class URLLookUpController {
 	@PostMapping(path = "/prettytougly")
 	public ResponseEntity<Map<String, String>> prettyToUglyURL(@RequestBody List<String> listPrettyUrl) {
 
-		logger.debug("Pretty to ugly request.");
+		logger.info("Pretty to ugly request.");
 		if (listPrettyUrl.size() == 0) {
 			throw new InvalidRequestException("Request url list empty");
 		}
