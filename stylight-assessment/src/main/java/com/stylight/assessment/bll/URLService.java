@@ -10,12 +10,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stylight.assessment.caching.URLCacheAgent;
+import com.stylight.assessment.controller.URLLookUpController;
 import com.stylight.assessment.dao.URLRepository;
-import com.stylight.assessment.model.Dummy;
 
 @Service
 public class URLService {
@@ -25,8 +27,11 @@ public class URLService {
 
 	@Autowired
 	URLCacheAgent cacheAgent;
+	
+	private static final Logger logger = LoggerFactory.getLogger(URLLookUpController.class);
 
 	public Map<String, String> getuglyToPrettyMap(List<String> listUglyUrl) {
+		
 		Map<String, String> map = new HashMap<String, String>();
 		ExecutorService executorService = Executors.newCachedThreadPool();
 		List<Future<Map<String, String>>> result = new ArrayList<Future<Map<String, String>>>();
@@ -35,6 +40,8 @@ public class URLService {
 		int size = 20;
 		int count = length / size;
 		int i = 0;
+		
+		logger.debug("Making task list...");
 
 		try {
 			for (; i < count; i++) {
@@ -52,6 +59,7 @@ public class URLService {
 			throw e;
 		}
 		
+		logger.debug("Merging result maps...");
 		try {
 			for (Future<Map<String, String>> future : result) {
 				Map<String, String> tmp = future.get();
