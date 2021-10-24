@@ -16,3 +16,15 @@
 [http://localhost:8031/actuator](http://localhost:8031/actuator)
 
 [http://localhost:8031/](http://localhost:8031/)
+
+### Note
+- Current implementation is straightforward, using in-memory map to store data and caching system.
+for better performance used executor framework for multiple task execution at simultaneously and 
+also use in-memory caching map.
+- Load sample mapped table from .xml file(resources/data.xml)
+
+### Thoughts
+- For better performance we can use load balancer(ex. round robin/hash based) & caching system(ex. memchched/redis)
+
+- Spring cloud Load Balancer(Feign/Ribbon) provide client side balancing.
+As container-orchestration(kubernetes) also provide load balancing by pods replicaSet.
