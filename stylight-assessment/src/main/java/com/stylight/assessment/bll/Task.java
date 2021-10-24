@@ -6,18 +6,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.stylight.assessment.caching.URLCacheAgent;
 import com.stylight.assessment.dao.URLRepository;
 import com.stylight.assessment.model.Dummy;
 
 public class Task implements Callable<Map<String, String>> {
-	
+
 	URLRepository urlRepository;
 	URLCacheAgent cacheAgent;
-
 	private List<String> listUglyUrl;
+	private static final Logger logger = LoggerFactory.getLogger(Task.class);
 
 	public Task(List<String> listUglyUrl, URLRepository urlRepository, URLCacheAgent cacheAgent) {
 		this.listUglyUrl = listUglyUrl;
@@ -28,28 +29,32 @@ public class Task implements Callable<Map<String, String>> {
 	@Override
 	public Map<String, String> call() throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
-		for (String url : listUglyUrl) {
+		try {
+			for (String url : listUglyUrl) {
+				if (urlRepository.getUglyToPretty().containsKey(url)) {
+					map.put(url, urlRepository.getUglyToPretty().get(url));
+					continue;
+				}
 
-			if (urlRepository.getUglyToPretty().containsKey(url)) {
-				map.put(url, urlRepository.getUglyToPretty().get(url));
-				continue;
+				String cache = cacheAgent.getFromCache(url);
+				if (cache != null) {
+					map.put(url, cache);
+					continue;
+				}
+
+				map.put(url, makeURL(url));
 			}
-
-			String cache = cacheAgent.getFromCache(url);
-			if (cache != null) {
-				map.put(url, cache);
-				continue;
-			}
-
-			map.put(url, makeURL(url));
-
+		} catch (Exception ex) {
+			throw ex;
 		}
+
 		return map;
 	}
-	
+
 	private String makeURL(String url) {
 		String prettyUrl = "";
-
+		logger.debug("Making url...");
+		
 		String[] split = url.split("\\?");
 		if (urlRepository.getUglyToPretty().containsKey(split[0])) {
 			prettyUrl = urlRepository.getUglyToPretty().get(split[0]);

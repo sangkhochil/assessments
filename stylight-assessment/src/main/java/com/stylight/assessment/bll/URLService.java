@@ -2,7 +2,6 @@ package com.stylight.assessment.bll;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +40,7 @@ public class URLService {
 		int count = length / size;
 		int i = 0;
 		
-		logger.info("Making task list...");
+		logger.debug("Making task list...");
 
 		try {
 			for (; i < count; i++) {
@@ -59,7 +58,7 @@ public class URLService {
 			throw e;
 		}
 		
-		logger.info("Merging result maps...");
+		logger.debug("Merging result maps...");
 		try {
 			for (Future<Map<String, String>> future : result) {
 				Map<String, String> tmp = future.get();
