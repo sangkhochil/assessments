@@ -2,19 +2,24 @@ package com.stylight.assessment.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class URLRepository {
+	
 	private static Map<String, String> uglyToPretty = new ConcurrentHashMap<String, String>();
 	private static Map<String, String> prettyToUgly = new ConcurrentHashMap<String, String>();
-
+	
 	static {
 		load();
 	}
@@ -40,10 +45,12 @@ public class URLRepository {
 	}
 
 	public Map<String, String> getUglyToPretty() {
-		return new ConcurrentHashMap<String, String>(uglyToPretty);
+		//return new ConcurrentHashMap<String, String>(uglyToPretty);
+		return Collections.unmodifiableMap(uglyToPretty);
 	}
 
 	public Map<String, String> getPrettyToUgly() {
-		return new ConcurrentHashMap<String, String>(prettyToUgly);
+//		return new ConcurrentHashMap<String, String>(prettyToUgly);
+		return Collections.unmodifiableMap(prettyToUgly);
 	}
 }

@@ -77,7 +77,9 @@ public class URLService {
 			for (String url : listPrettyUrl) {
 				if (urlRepository.getPrettyToUgly().containsKey(url)) {
 					map.put(url, urlRepository.getPrettyToUgly().get(url));
-				} else {
+				} else if(cacheAgent.getFromCache(url) != null){
+					map.put(url, cacheAgent.getFromCache(url));
+				}else {
 					map.put(url, url);
 				}
 			}
